@@ -15,15 +15,19 @@ class package(apie.Endpoint):
         # These should be provided by a predecessor.
         this.staticKWArgs.append('package_package_authenticator')
         this.staticKWArgs.append('package_upload_url')
-        this.staticKWArgs.append('package_upload_map')
+        this.staticKWArgs.append('package_upload_query_map')
+        this.staticKWArgs.append('package_upload_data_map')
         # upload_files is not static. downstream 'files' arg will grab.
         this.staticKWArgs.append('package_download_url')
-        this.staticKWArgs.append('package_download_map')
-        this.staticKWArgs.append('package_download_secondary_field')
+        this.staticKWArgs.append('package_download_query_map')
+        this.staticKWArgs.append('package_download_data_map')
+        this.staticKWArgs.append('package_download_redirect_url_field')
         this.staticKWArgs.append('package_delete_url')
-        this.staticKWArgs.append('package_delete_map')
+        this.staticKWArgs.append('package_delete_query_map')
+        this.staticKWArgs.append('package_delete_data_map')
         this.staticKWArgs.append('package_list_url')
-        this.staticKWArgs.append('package_list_map')
+        this.staticKWArgs.append('package_list_query_map')
+        this.staticKWArgs.append('package_list_data_map')
 
         this.optionalKWArgs['package_name'] = None
         this.optionalKWArgs['domain'] = ""
@@ -61,8 +65,9 @@ For example curl -X GET .../package/list is the same as curl -X GET .../package,
         this.authenticator = this.package_authenticator
         this.method = this.request.method
         this.url = getattr(this, f"package_{this.next[0]}_url")
-        this.data_map = getattr(this, f"package_{this.next[0]}_map")
+        this.query_map = getattr(this, f"package_{this.next[0]}_query_map")
+        this.data_map = getattr(this, f"package_{this.next[0]}_data_map")
 
         if (this.next[0] == 'download'):
-            this.secondary_field = this.download_secondary_field
+            this.redirect_url_field = this.download_redirect_url_field
 
