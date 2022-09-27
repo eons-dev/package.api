@@ -13,7 +13,7 @@ class package(apie.Endpoint):
         this.allowedNext.append('list')
 
         # These should be provided by a predecessor.
-        this.staticKWArgs.append('package_package_authenticator')
+        this.staticKWArgs.append('package_authenticator')
         this.staticKWArgs.append('package_upload_url')
         this.staticKWArgs.append('package_upload_query_map')
         this.staticKWArgs.append('package_upload_data_map')
@@ -69,5 +69,5 @@ For example curl -X GET .../package/list is the same as curl -X GET .../package,
         this.data_map = getattr(this, f"package_{this.next[0]}_data_map")
 
         if (this.next[0] == 'download'):
-            this.redirect_url_field = this.download_redirect_url_field
+            this.redirect_url_field = this.package_download_redirect_url_field
 
