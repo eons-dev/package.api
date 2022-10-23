@@ -14,6 +14,7 @@ class package(apie.Endpoint):
 
         # These should be provided by a predecessor.
         this.staticKWArgs.append('package_authenticator')
+        this.staticKWArgs.append('package_post_ids')
         this.staticKWArgs.append('package_upload_url')
         this.staticKWArgs.append('package_upload_query_map')
         this.staticKWArgs.append('package_upload_data_map')
@@ -36,7 +37,9 @@ class package(apie.Endpoint):
         this.optionalKWArgs['type'] = ""
         this.optionalKWArgs['version'] = ""
 
-        this.helpText = '''\
+    # Required Endpoint method. See that class for details.
+    def GetHelpText(this):
+        return '''\
 Perform CRUD operations, or more precisely LUDD operations (List, Upload, Download, Delete) on packages.
 This will prepare all arguments for the generic LUDD endpoints.
 
@@ -63,6 +66,7 @@ For example curl -X GET .../package/list is the same as curl -X GET .../package,
 
         # Set member variables so that they can be Fetch()ed by whatever is next.
         this.authenticator = this.package_authenticator
+        this.post_ids = this.package_post_ids
         this.method = this.request.method
         this.url = getattr(this, f"package_{this.next[0]}_url")
         this.query_map = getattr(this, f"package_{this.next[0]}_query_map")
@@ -70,4 +74,10 @@ For example curl -X GET .../package/list is the same as curl -X GET .../package,
 
         if (this.next[0] == 'download'):
             this.redirect_url_field = this.package_download_redirect_url_field
+            this.allow_public = True
+
+        if (this.next[0] == 'list'):
+            this.authenticator = "noauth"
+            this.fields = ['slug']
+            this.make_list_of = 'slug'
 
